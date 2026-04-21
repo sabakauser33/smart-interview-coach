@@ -7,8 +7,11 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://smart-interview-coach-five.vercel.app/#/login",
     credentials: true
+
+
+    
 }))
 
 /* require all the routes here */
