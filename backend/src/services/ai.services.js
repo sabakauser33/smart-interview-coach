@@ -43,7 +43,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             const response = await ai.models.generateContent({
-                model: "gemini-2.0-flash-exp",
+                model: "gemini-2.0-flash",
                 contents: prompt,
                 config: {
                     responseMimeType: "application/json",
@@ -104,7 +104,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             const response = await ai.models.generateContent({
-                model: "gemini-2.0-flash-exp",
+                model: "gemini-2.0-flash",
                 contents: prompt,
                 config: {
                     responseMimeType: "application/json",
