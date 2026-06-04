@@ -9,25 +9,14 @@ app.use(cookieParser())
 
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.FRONTEND_URL || "https://smart-interview-coach-five.vercel.app",
+  "https://smart-interview-coach-pilj.vercel.app",
 ]
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
+app.use(cors({
+  origin: allowedOrigins,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-}
+}))
 
-app.use(cors(corsOptions))
 app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
     return res.sendStatus(204)
