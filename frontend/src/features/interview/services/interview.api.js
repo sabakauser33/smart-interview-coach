@@ -3,6 +3,9 @@ import axios from "axios";
 // Use relative URLs by default so Vite dev proxy can forward requests to the backend.
 // In production set `VITE_API_URL` to the deployed backend.
 const baseURL = import.meta.env.VITE_API_URL || ""
+if (import.meta.env.PROD && !baseURL) {
+    throw new Error("VITE_API_URL is required in production. Set it in Vercel environment variables.")
+}
 const api = axios.create({
     baseURL,
     withCredentials: true,

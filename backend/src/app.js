@@ -10,7 +10,7 @@ app.use(cookieParser())
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://smart-interview-coach-pilj.vercel.app",
+  "https://smart-interview-coach-pilj-l8gc2spf1-saba-kausers-projects.vercel.app",
 ]
 
 const corsOptions = {
