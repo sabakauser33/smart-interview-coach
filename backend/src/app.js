@@ -7,12 +7,26 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-app.use(cors({
-  origin: true,
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://smart-interview-coach-pilj.vercel.app",
+]
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
-}))
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+}
+
+app.use(cors(corsOptions))
 
 app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
