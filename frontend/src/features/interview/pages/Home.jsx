@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     getReports();
-  }, []);
+  }, [getReports]);
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -42,7 +42,7 @@ const Home = () => {
         resumeFile,
       });
       if (data?._id) {
-        navigate(`/interview/${data._id}`);
+        navigate(`/interview-plan?reportId=${data._id}`);
       } else {
         alert(
           "The AI service is temporarily busy. Please wait a few seconds and try again.",
@@ -51,7 +51,8 @@ const Home = () => {
     } catch (error) {
       console.error(error);
       alert(
-        "The AI service is temporarily busy. Please wait a few seconds and try again.",
+        error?.message ||
+          "The AI service is temporarily busy. Please wait a few seconds and try again.",
       );
     } finally {
       setGenerating(false); // ← always reset
@@ -111,11 +112,12 @@ const Home = () => {
               onChange={(e) => {
                 setJobDescription(e.target.value);
               }}
+              value={jobDescription}
               className="panel__textarea"
               placeholder={`Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'`}
               maxLength={5000}
             />
-            <div className="char-counter">0 / 5000 chars</div>
+            <div className="char-counter">{jobDescription.length} / 5000 chars</div>
           </div>
 
           {/* Vertical Divider */}
@@ -277,7 +279,7 @@ const Home = () => {
                 className="report-item"
                 onClick={() => {
                   clearReport();
-                  navigate(`/interview/${report._id}`);
+                  navigate(`/interview-plan?reportId=${report._id}`);
                 }}
               >
                 <h3>{report.title || "Untitled Position"}</h3>
@@ -297,9 +299,9 @@ const Home = () => {
 
       {/* Page Footer */}
       <footer className="page-footer">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Help Center</a>
+        <a href="#/privacy-policy">Privacy Policy</a>
+        <a href="#/terms-of-service">Terms of Service</a>
+        <a href="#/help-center">Help Center</a>
       </footer>
     </div>
   );

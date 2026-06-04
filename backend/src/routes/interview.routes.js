@@ -27,6 +27,14 @@ interviewRouter.get(
   interviewController.getInterviewReportByIdController
 );
 
+// ✅ POST - upload resume and optimize PDF
+interviewRouter.post(
+  "/report/:interviewId/resume/optimize",
+  authMiddleware.authUser,
+  upload.single("resume"),
+  interviewController.uploadResumeOptimizeController
+);
+
 // ✅ POST - generate PDF
 interviewRouter.post(
   "/resume/pdf/:interviewReportId",

@@ -1,4 +1,4 @@
-import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf } from "../services/interview.api"
+import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf, optimizeResumePdf } from "../services/interview.api"
 import { useContext, useCallback } from "react"
 import { InterviewContext } from "../interview.context"
 
@@ -18,13 +18,14 @@ export const useInterview = () => {
         try {
             response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile })
             setReport(response.interviewReport)
-        } catch (error) {
-            console.log(error)
+            } catch (error) {
+            console.error(error)
+            throw error
         } finally {
             setLoading(false)
         }
         return response?.interviewReport || null
-    }, [])
+    }, [setLoading, setReport])
 
     const getReportById = useCallback(async (interviewId) => {
         setLoading(true)
@@ -33,12 +34,12 @@ export const useInterview = () => {
             response = await getInterviewReportById(interviewId)
             setReport(response.interviewReport)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         } finally {
             setLoading(false)
         }
         return response?.interviewReport || null
-    }, [])
+    }, [setLoading, setReport])
 
     const getReports = useCallback(async () => {
         setLoading(true)
@@ -52,24 +53,17 @@ export const useInterview = () => {
             setLoading(false)
         }
         return response?.interviewReports || []
-    }, [])
+    }, [setLoading, setReports])
 
     const getResumePdf = useCallback(async (interviewReportId) => {
-        try {
-            const response = await generateResumePdf({ interviewReportId })
-            const url = window.URL.createObjectURL(new Blob([response], { type: "application/pdf" }))
-            const link = document.createElement("a")
-            link.href = url
-            link.setAttribute("download", `resume_${interviewReportId}.pdf`)
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-            window.URL.revokeObjectURL(url)
-        } catch (error) {
-            console.error(error)
-            alert("Failed to download resume. Please try again.")
-        }
+        const response = await generateResumePdf({ interviewReportId })
+        return response
     }, [])
 
-    return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf, clearReport }
+    const optimizeResume = useCallback(async (interviewReportId, resumeFile) => {
+        const response = await optimizeResumePdf({ interviewReportId, resumeFile })
+        return response
+    }, [])
+
+    return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf, optimizeResume, clearReport }
 }

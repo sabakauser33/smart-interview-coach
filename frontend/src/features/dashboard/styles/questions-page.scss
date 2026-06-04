@@ -1,0 +1,73 @@
+@use "sass:color";
+@use "../../../styles/variables" as *;
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: $color-primary;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  background: rgba($bg-panel, 0.6);
+  color: $text-primary;
+  font-weight: 600;
+  transition: $transition;
+}
+
+.filter-btn--active {
+  background: linear-gradient(135deg, $color-primary, $color-secondary);
+  color: white;
+}
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.question-card {
+  background: rgba($bg-panel, 0.94);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.question-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.question-number { background: linear-gradient(135deg, $color-primary, $color-secondary); color: white; }
+
+.question-text p { color: $text-primary; font-weight:600; }
+
+.content-section {
+  margin-bottom: 16px;
+  padding: 14px;
+  background: rgba($bg-panel, 0.86);
+  border-radius: 8px;
+  border-left: 3px solid rgba($color-secondary,0.9);
+}
+
+.content-section h4 { color: $text-primary; }
+.content-section p { color: $text-muted; }
+
+.empty-state { background: rgba($bg-panel,0.9); color: $text-muted; padding: 40px; border-radius: 12px; }
+
+.btn { padding: 8px 12px; border-radius: 8px; }

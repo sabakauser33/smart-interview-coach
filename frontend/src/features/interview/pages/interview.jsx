@@ -139,12 +139,27 @@ const Interview = () => {
   const { handleLogout } = useAuth();
 
   useEffect(() => {
-    if (interviewId) {
+    let mounted = true;
+
+    const loadInterview = async () => {
+      if (!interviewId) {
+        return;
+      }
+
       clearReport();
       setPageLoading(true);
-      getReportById(interviewId).finally(() => setPageLoading(false));
-    }
-  }, [interviewId]);
+      await getReportById(interviewId);
+      if (mounted) {
+        setPageLoading(false);
+      }
+    };
+
+    loadInterview();
+
+    return () => {
+      mounted = false;
+    };
+  }, [interviewId, clearReport, getReportById]);
 
   if (pageLoading || !report) {
     return (
@@ -185,8 +200,16 @@ const Interview = () => {
             onClick={async () => {
               try {
                 setPdfLoading(true);
-                await getResumePdf(interviewId);
-              } catch (error) {
+                const blob = await getResumePdf(interviewId);
+                const url = window.URL.createObjectURL(new Blob([blob], { type: "application/pdf" }));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `resume_${interviewId}.pdf`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+              } catch {
                 alert("Failed to download resume. Please try again.");
               } finally {
                 setPdfLoading(false);

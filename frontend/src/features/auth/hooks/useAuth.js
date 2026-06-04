@@ -1,5 +1,5 @@
-import { useContext } from "react";  // ← remove useEffect
-import { AuthContext } from "../auth.context";
+import { useContext } from "react";
+import { AuthContext } from "../auth.context.js";
 import { login, register, logout } from "../services/auth.api";
 
 export const useAuth = () => {
@@ -11,7 +11,10 @@ export const useAuth = () => {
     try {
       const data = await login({ email, password });
       setUser(data.user);
+      return true;
     } catch (err) {
+      console.error(err);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -22,7 +25,10 @@ export const useAuth = () => {
     try {
       const data = await register({ username, email, password });
       setUser(data.user);
+      return true;
     } catch (err) {
+      console.error(err);
+      return false;
     } finally {
       setLoading(false);
     }

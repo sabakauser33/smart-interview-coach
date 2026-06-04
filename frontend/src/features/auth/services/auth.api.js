@@ -1,8 +1,10 @@
 import axios from "axios"
 
-
+// Use relative URLs by default so Vite dev proxy can forward requests to the backend.
+// In production set `VITE_API_URL` to the deployed backend.
+const baseURL = import.meta.env.VITE_API_URL || ""
 const api = axios.create({
-    baseURL: "https://smart-interview-coach-backend.onrender.com",
+    baseURL,
     withCredentials: true
 })
 

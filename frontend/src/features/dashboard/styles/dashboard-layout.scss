@@ -1,0 +1,173 @@
+@use "sass:color";
+@use "../../../styles/variables" as *;
+
+$panel-bg-start: $color-shell-start;
+$panel-bg-end: $color-shell-end;
+
+// ── Variables ────────────────────────────────────────────────────────────────
+$sidebar-width: 280px;
+$sidebar-width-mobile: 250px;
+
+// ── Dashboard Container ────────────────────────────────────────────────────────
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, $panel-bg-start 0%, $panel-bg-end 100%);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+
+// ── Dashboard Content ────────────────────────────────────────────────────────
+.dashboard-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  overflow-y: auto;
+  transition: $transition;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-top: 70px;
+  }
+
+  .dashboard-shell {
+    padding: 28px 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  // subtle inner gradient behind the dashboard content
+  .dashboard-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(1200px 400px at 10% 10%, rgba($color-primary, 0.16), transparent 20%), radial-gradient(800px 300px at 90% 90%, rgba($color-secondary, 0.10), transparent 30%);
+    border-radius: 20px;
+    z-index: 0;
+  }
+
+  // ── Scrollbar Styling ────────────────────────────────────────────────────────
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($text-primary, 0.22);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba($text-primary, 0.32);
+    }
+  }
+}
+
+// ── Dashboard Wrapper ────────────────────────────────────────────────────────
+.dashboard-wrapper {
+  padding: 32px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  background: rgba($bg-card, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 1;
+  color: $text-primary;
+
+  @media (max-width: 1024px) {
+    padding: 24px 32px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+  }
+}
+
+// ── Page Header Styles ────────────────────────────────────────────────────────
+.page-header {
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 8px 0;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+// ── Cards and Containers ────────────────────────────────────────────────────
+.card {
+  background: rgba($bg-panel, 0.95);
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24);
+  transition: $transition;
+  color: $text-primary;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 72px rgba(0, 0, 0, 0.28);
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+// ── Grid Layouts ────────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  gap: 24px;
+
+  &--2 {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--3 {
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--4 {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

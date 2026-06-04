@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import "../auth.form.scss"
 
@@ -8,12 +8,18 @@ const Register = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const { loading, handleRegister } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await handleRegister({ username, email, password })
-    navigate("/")
+    setError("")
+    const success = await handleRegister({ username, email, password })
+    if (success) {
+      navigate("/")
+    } else {
+      setError("Unable to create account. Please check your details and try again.")
+    }
   }
 
   if (loading) {
@@ -32,7 +38,7 @@ const Register = () => {
         {/* Brand */}
         <div className="auth-brand">
           <span className="auth-brand__dot" />
-          <span>AI Interview Coach</span>
+          <span>Smart Interview Coach</span>
         </div>
 
         {/* Heading */}
@@ -95,6 +101,7 @@ const Register = () => {
           <button type="submit" className="auth-btn">Create Account</button>
         </form>
 
+        {error && <p className="auth-error">{error}</p>}
         <p className="auth-footer">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>

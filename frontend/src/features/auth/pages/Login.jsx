@@ -1,5 +1,5 @@
-import React, { useState , useEffect} from 'react'
-import { useNavigate, Link } from 'react-router'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import "../auth.form.scss"
 import { useAuth } from '../hooks/useAuth'
 
@@ -8,15 +8,21 @@ const Login = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
-  useEffect(() => {                    // ← add this
+  useEffect(() => {
     if (user) navigate('/')
-  }, [user])
+  }, [user, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await handleLogin({ email, password })
-    navigate('/')
+    setError("")
+    const success = await handleLogin({ email, password })
+    if (success) {
+      navigate('/')
+    } else {
+      setError("Invalid email or password. Please try again.")
+    }
   }
 
   if (loading) {
@@ -79,6 +85,7 @@ const Login = () => {
           </div>
 
           <button type="submit" className="auth-btn">Sign In</button>
+          {error && <p className="auth-error">{error}</p>}
         </form>
 
         <p className="auth-footer">
