@@ -1,39 +1,21 @@
 const express = require("express")
 const cookieParser = require("cookie-parser")
-const cors = require("cors")
 
 const app = express()
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://smart-interview-coach-pilj.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,Cookie');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json())
 app.use(cookieParser())
-
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://smart-interview-coach-pilj-l8gc2spf1-saba-kausers-projects.vercel.app",
-]
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-}
-
-app.use(cors(corsOptions))
-
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204)
-  }
-  next()
-})
 
 /* require all the routes here */
 const authRouter = require("./routes/auth.route")
